@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Confirmación de Cena</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(120deg, #fde2e4, #fadadd);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card {
+    background: rgba(255,255,255,0.9);
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    max-width: 420px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 48px;
+    margin-bottom: 10px;
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from { color: #c9184a; }
+    to { color: #ff4d6d; }
+}
+
+p {
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+
+button {
+    padding: 12px 22px;
+    border-radius: 30px;
+    border: none;
+    margin: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+button:hover {
+    transform: scale(1.1);
+}
+
+.yes {
+    background: #ff4d6d;
+    color: white;
+}
+
+.no {
+    background: #adb5bd;
+    color: white;
+}
+
+#message {
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.flower {
+    position: absolute;
+    font-size: 30px;
+    animation: fall 4s linear infinite;
+}
+
+@keyframes fall {
+    from { transform: translateY(-50px); opacity: 1; }
+    to { transform: translateY(100vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<audio autoplay loop>
+  <source src="https://cdn.pixabay.com/audio/2023/03/06/audio_4c6d6c2b62.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+    <h1>Hola <span id="name">Sophia</span> 💖</h1>
+    <p>
+        Me alegra que estés aquí.<br>
+        Queremos confirmar la cena programada para este <b>domingo 15 de febrero</b>
+        a las <b>8:00 pm</b>.
+    </p>
+
+    <button class="yes" onclick="response(true)">Sí asistiré</button>
+    <button class="no" onclick="response(false)">No asistiré</button>
+
+    <div id="message"></div>
+</div>
+
+<script>
+function response(yes) {
+    document.getElementById("message").innerHTML = "";
+
+    if (yes) {
+        document.getElementById("message").innerHTML =
+        "✨ Perfecto! Recuerda, solo debes llevar tu hermosura y carisma ✨";
+        flowers("🌸");
+        notify("Sí asistiré");
+    } else {
+        document.getElementById("message").innerHTML =
+        "💔 Comprendo, lamento que no nos puedas acompañar";
+        flowers("🥀");
+        notify("No asistiré");
+    }
+}
+
+function flowers(icon) {
+    for (let i = 0; i < 25; i++) {
+        let flower = document.createElement("div");
+        flower.className = "flower";
+        flower.innerText = icon;
+        flower.style.left = Math.random() * 100 + "vw";
+        flower.style.animationDuration = (2 + Math.random() * 3) + "s";
+        document.body.appendChild(flower);
+
+        setTimeout(() => flower.remove(), 5000);
+    }
+}
+
+function notify(answer) {
+    fetch("https://formspree.io/f/TU_ID_AQUI", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            nombre: "Sophia",
+            respuesta: answer
+        })
+    });
+}
+</script>
+
+</body>
+</html>
